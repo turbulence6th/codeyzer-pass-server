@@ -3,13 +3,14 @@ package com.codeyzer.pass.sunucu.mapper;
 import com.codeyzer.pass.sunucu.dto.HariciSifreDTO;
 import com.codeyzer.pass.sunucu.dto.HariciSifreGuncelleDTO;
 import com.codeyzer.pass.sunucu.dto.HariciSifreKaydetDTO;
+import com.codeyzer.pass.sunucu.dto.HariciSifreYenileElemanDTO;
 import com.codeyzer.pass.sunucu.entity.HariciSifre;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-10T20:58:43+0300",
+    date = "2021-04-19T07:24:33+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.6 (Oracle Corporation)"
 )
 @Component
@@ -23,10 +24,7 @@ public class HariciSifreMapperImpl implements HariciSifreMapper {
 
         HariciSifre hariciSifre = new HariciSifre();
 
-        hariciSifre.setKimlik( dto.getKimlik() );
-        hariciSifre.setPlatform( dto.getPlatform() );
-        hariciSifre.setKullaniciAdi( dto.getKullaniciAdi() );
-        hariciSifre.setSifre( dto.getSifre() );
+        hariciSifre.setIcerik( dto.getIcerik() );
 
         return hariciSifre;
     }
@@ -37,9 +35,7 @@ public class HariciSifreMapperImpl implements HariciSifreMapper {
             return;
         }
 
-        varlik.setPlatform( dto.getPlatform() );
-        varlik.setKullaniciAdi( dto.getKullaniciAdi() );
-        varlik.setSifre( dto.getSifre() );
+        varlik.setIcerik( dto.getIcerik() );
     }
 
     @Override
@@ -51,10 +47,21 @@ public class HariciSifreMapperImpl implements HariciSifreMapper {
         HariciSifreDTO hariciSifreDTO = new HariciSifreDTO();
 
         hariciSifreDTO.setKimlik( varlik.getKimlik() );
-        hariciSifreDTO.setPlatform( varlik.getPlatform() );
-        hariciSifreDTO.setKullaniciAdi( varlik.getKullaniciAdi() );
-        hariciSifreDTO.setSifre( varlik.getSifre() );
+        hariciSifreDTO.setIcerik( varlik.getIcerik() );
 
         return hariciSifreDTO;
+    }
+
+    @Override
+    public HariciSifre varligaDonustur(HariciSifreYenileElemanDTO dto) {
+        if ( dto == null ) {
+            return null;
+        }
+
+        HariciSifre hariciSifre = new HariciSifre();
+
+        hariciSifre.setIcerik( dto.getIcerik() );
+
+        return hariciSifre;
     }
 }

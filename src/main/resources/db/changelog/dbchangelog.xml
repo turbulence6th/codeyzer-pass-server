@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <changeSet id="202104102049" author="oguz">
+    <changeSet id="202104190719" author="oguz">
         <createTable tableName="kullanici">
             <column name="kimlik" type="varchar(256)">
                 <constraints primaryKey="true"/>
@@ -14,9 +14,7 @@
             <column name="kimlik" type="varchar(256)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="platform" type="varchar(256)"/>
-            <column name="kullanici_adi" type="varchar(256)"/>
-            <column name="sifre" type="varchar(256)"/>
+            <column name="icerik" type="clob"/>
             <column name="kullanici_kimlik" type="varchar(256)">
                 <constraints foreignKeyName="fk_kullanici_kimlik" referencedTableName="kullanici" referencedColumnNames="kimlik"/>
             </column>

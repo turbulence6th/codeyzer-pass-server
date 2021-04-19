@@ -27,7 +27,7 @@ public class HariciSifreServis {
 
     @Transactional
     public List<HariciSifreDTO> hariciSifreGetir(HariciSifreGetirDTO hariciSifreGetirDTO) {
-        List<HariciSifre> hariciSifreListesi = hariciSifreHavuzu.platformVeKullaniciyaGoreGetir(hariciSifreGetirDTO.getPlatform(), kullaniciHavuzu.getOne(hariciSifreGetirDTO.getKullaniciKimlik()));
+        List<HariciSifre> hariciSifreListesi = hariciSifreHavuzu.kullaniciIleGetir(kullaniciHavuzu.getOne(hariciSifreGetirDTO.getKullaniciKimlik()));
         return hariciSifreListesi.stream()
                 .map(hariciSifreMapper::dtoyaDonustur)
                 .collect(Collectors.toList());
@@ -45,5 +45,15 @@ public class HariciSifreServis {
         HariciSifre hariciSifre = hariciSifreHavuzu.kimlikVeKullaniyaGoreGetir(hariciSifreSilDTO.getKimlik(), kullaniciHavuzu.getOne(hariciSifreSilDTO.getKullaniciKimlik()))
                 .orElseThrow(() -> new CodeyzerIstisna("Harici şifre bulunamadı."));
        hariciSifreHavuzu.delete(hariciSifre);
+    }
+
+    @Transactional
+    public void hariciSifreYenile(HariciSifreYenileDTO hariciSifreYenileDTO) {
+        hariciSifreHavuzu.kullaniciIleSifreSil(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getKullaniciKimlik()));
+        for (HariciSifreYenileElemanDTO eleman : hariciSifreYenileDTO.getHariciSifreListesi()) {
+            HariciSifre hariciSifre = hariciSifreMapper.varligaDonustur(eleman);
+            hariciSifre.setKullanici(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getKullaniciKimlik()));
+            hariciSifreHavuzu.save(hariciSifre);
+        }
     }
 }

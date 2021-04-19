@@ -27,7 +27,7 @@ public class HariciSifreController {
     }
 
     @RequestMapping(path = "/kaydet", method = RequestMethod.POST)
-    public Cevap<Void> yeni(@RequestBody HariciSifreKaydetDTO istek) {
+    public Cevap<Void> kaydet(@RequestBody HariciSifreKaydetDTO istek) {
         hariciSifreServis.hariciSifreKaydet(istek);
         return new Cevap<>(null, "Harici şifreniz başarılı olarak kaydedildi.");
     }
@@ -36,5 +36,10 @@ public class HariciSifreController {
     public Cevap<Void> sil(@RequestBody HariciSifreSilDTO istek) {
         hariciSifreServis.hariciSifreSil(istek);
         return new Cevap<>(null, "Harici şifreniz başarılı olarak silindi.");
+    }
+
+    public Cevap<Void> sifreleriYenile(@RequestBody HariciSifreYenileDTO istek) {
+        hariciSifreServis.hariciSifreYenile(istek);
+        return new Cevap<>(null, "Harici şifreleriniz başarılı olarak yenilendi.");
     }
 }

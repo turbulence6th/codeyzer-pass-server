@@ -1,6 +1,7 @@
 package com.codeyzer.pass.sunucu.entity;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -12,10 +13,11 @@ import javax.persistence.*;
 @Builder
 public class HariciSifre {
     @Id
+    @GeneratedValue(generator = "kimlik_uretici")
+    @GenericGenerator(name = "kimlik_uretici", strategy = "com.codeyzer.pass.sunucu.config.KimlikUretici")
     private String kimlik;
-    private String platform;
-    private String kullaniciAdi;
-    private String sifre;
+
+    private String icerik;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kullanici_kimlik")

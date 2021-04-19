@@ -9,8 +9,6 @@ import lombok.*;
 @Builder
 public class HariciSifreKaydetDTO {
     private String kimlik;
-    private String platform;
-    private String kullaniciAdi;
-    private String sifre;
+    private String icerik;
     private String kullaniciKimlik;
 }
