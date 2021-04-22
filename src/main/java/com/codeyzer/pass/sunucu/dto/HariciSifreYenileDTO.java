@@ -12,4 +12,5 @@ import java.util.List;
 public class HariciSifreYenileDTO {
     private List<HariciSifreYenileElemanDTO> hariciSifreListesi;
     private String kullaniciKimlik;
+    private String yeniKullaniciKimlik;
 }

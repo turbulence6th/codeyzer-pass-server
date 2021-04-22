@@ -38,6 +38,7 @@ public class HariciSifreController {
         return new Cevap<>(null, "Harici şifreniz başarılı olarak silindi.");
     }
 
+    @RequestMapping(path = "/yenile", method = RequestMethod.POST)
     public Cevap<Void> sifreleriYenile(@RequestBody HariciSifreYenileDTO istek) {
         hariciSifreServis.hariciSifreYenile(istek);
         return new Cevap<>(null, "Harici şifreleriniz başarılı olarak yenilendi.");

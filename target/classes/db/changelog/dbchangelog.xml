@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <changeSet id="202104102049" author="oguz">
+    <changeSet id="202104190719" author="oguz">
         <createTable tableName="kullanici">
             <column name="kimlik" type="varchar(256)">
                 <constraints primaryKey="true"/>
@@ -14,12 +14,84 @@
             <column name="kimlik" type="varchar(256)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="platform" type="varchar(256)"/>
-            <column name="kullanici_adi" type="varchar(256)"/>
-            <column name="sifre" type="varchar(256)"/>
+            <column name="icerik" type="clob"/>
             <column name="kullanici_kimlik" type="varchar(256)">
                 <constraints foreignKeyName="fk_kullanici_kimlik" referencedTableName="kullanici" referencedColumnNames="kimlik"/>
             </column>
         </createTable>
+
+        <createTable tableName="platform_secici">
+            <column name="kimlik" type="varchar(256)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="platform" type="varchar(256)"/>
+            <column name="platform_regex" type="varchar(256)"/>
+            <column name="kullanici_adi_secici" type="varchar(256)"/>
+            <column name="sifre_secici" type="varchar(256)"/>
+        </createTable>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Twitter"/>
+            <column name="platform_regex" value="^(www\.)?twitter.com/(login)?$"/>
+            <column name="kullanici_adi_secici" value='input[name="session[username_or_email]"]'/>
+            <column name="sifre_secici" value='input[name="session[password]"]'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Github"/>
+            <column name="platform_regex" value="^(www\.)?github.com/login$"/>
+            <column name="kullanici_adi_secici" value='#login_field'/>
+            <column name="sifre_secici" value='#password'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Instagram"/>
+            <column name="platform_regex" value="^(www\.)?instagram.com/$"/>
+            <column name="kullanici_adi_secici" value='input[name="username"]'/>
+            <column name="sifre_secici" value='input[name="password"]'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Linkedin"/>
+            <column name="platform_regex" value="^(www\.)?linkedin.com/(checkpoint/rm/sign-in-another-account)?$"/>
+            <column name="kullanici_adi_secici" value='#session_key'/>
+            <column name="sifre_secici" value='#session_password'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Discord"/>
+            <column name="platform_regex" value="^(www\.)?discord.com/login$"/>
+            <column name="kullanici_adi_secici" value='input[name="email"]'/>
+            <column name="sifre_secici" value='input[name="password"]'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Google"/>
+            <column name="platform_regex" value="^(www\.)?accounts.google.com/.*/(identifier|pwd)$"/>
+            <column name="kullanici_adi_secici" value='input[name="identifier"]'/>
+            <column name="sifre_secici" value='input[name="password"]'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Yemek Sepeti"/>
+            <column name="platform_regex" value="^(www\.)yemeksepeti.com/.*"/>
+            <column name="kullanici_adi_secici" value='#UserName'/>
+            <column name="sifre_secici" value='#password'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Amazon"/>
+            <column name="platform_regex" value="^(www\.)amazon..*/ap/signin"/>
+            <column name="kullanici_adi_secici" value='#ap_email'/>
+            <column name="sifre_secici" value='#ap_password'/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

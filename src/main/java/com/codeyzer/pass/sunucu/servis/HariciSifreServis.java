@@ -2,6 +2,7 @@ package com.codeyzer.pass.sunucu.servis;
 
 import com.codeyzer.pass.sunucu.dto.*;
 import com.codeyzer.pass.sunucu.entity.HariciSifre;
+import com.codeyzer.pass.sunucu.entity.Kullanici;
 import com.codeyzer.pass.sunucu.exception.CodeyzerIstisna;
 import com.codeyzer.pass.sunucu.mapper.HariciSifreMapper;
 import com.codeyzer.pass.sunucu.repository.HariciSifreHavuzu;
@@ -18,11 +19,13 @@ public class HariciSifreServis {
     private final HariciSifreMapper hariciSifreMapper;
     private final KullaniciHavuzu kullaniciHavuzu;
     private final HariciSifreHavuzu hariciSifreHavuzu;
+    private final KullaniciServis kullaniciServis;
 
-    public HariciSifreServis(HariciSifreMapper hariciSifreMapper, KullaniciHavuzu kullaniciHavuzu, HariciSifreHavuzu hariciSifreHavuzu) {
+    public HariciSifreServis(HariciSifreMapper hariciSifreMapper, KullaniciHavuzu kullaniciHavuzu, HariciSifreHavuzu hariciSifreHavuzu, KullaniciServis kullaniciServis) {
         this.hariciSifreMapper = hariciSifreMapper;
         this.kullaniciHavuzu = kullaniciHavuzu;
         this.hariciSifreHavuzu = hariciSifreHavuzu;
+        this.kullaniciServis = kullaniciServis;
     }
 
     @Transactional
@@ -49,10 +52,13 @@ public class HariciSifreServis {
 
     @Transactional
     public void hariciSifreYenile(HariciSifreYenileDTO hariciSifreYenileDTO) {
-        hariciSifreHavuzu.kullaniciIleSifreSil(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getKullaniciKimlik()));
+        kullaniciHavuzu.deleteById(hariciSifreYenileDTO.getKullaniciKimlik());
+        kullaniciServis.kullaniciOlustur(KullaniciOlusturDTO.builder()
+                .kimlik(hariciSifreYenileDTO.getYeniKullaniciKimlik())
+                .build());
         for (HariciSifreYenileElemanDTO eleman : hariciSifreYenileDTO.getHariciSifreListesi()) {
             HariciSifre hariciSifre = hariciSifreMapper.varligaDonustur(eleman);
-            hariciSifre.setKullanici(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getKullaniciKimlik()));
+            hariciSifre.setKullanici(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getYeniKullaniciKimlik()));
             hariciSifreHavuzu.save(hariciSifre);
         }
     }
