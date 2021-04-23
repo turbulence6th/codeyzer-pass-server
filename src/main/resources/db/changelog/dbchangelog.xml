@@ -81,7 +81,7 @@
         <insert tableName="platform_secici">
             <column name="kimlik" valueComputed="gen_random_uuid()"/>
             <column name="platform" value="Yemek Sepeti"/>
-            <column name="platform_regex" value="^(www\.)yemeksepeti.com/.*"/>
+            <column name="platform_regex" value="^(www\.)?yemeksepeti.com/.*$"/>
             <column name="kullanici_adi_secici" value='#UserName'/>
             <column name="sifre_secici" value='#password'/>
         </insert>
@@ -89,9 +89,17 @@
         <insert tableName="platform_secici">
             <column name="kimlik" valueComputed="gen_random_uuid()"/>
             <column name="platform" value="Amazon"/>
-            <column name="platform_regex" value="^(www\.)amazon..*/ap/signin"/>
+            <column name="platform_regex" value="^(www\.)?amazon..*/ap/signin$"/>
             <column name="kullanici_adi_secici" value='#ap_email'/>
             <column name="sifre_secici" value='#ap_password'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Heroku"/>
+            <column name="platform_regex" value="^(www\.)?id.heroku.com/login$"/>
+            <column name="kullanici_adi_secici" value='#email'/>
+            <column name="sifre_secici" value='#password'/>
         </insert>
     </changeSet>
 </databaseChangeLog>
