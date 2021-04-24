@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://${_DATABASE_URL:localhost}:5432/codeyzer_pass?currentSchema=codeyzer_pass
-    username: ${_DATABASE_USERNAME:postgres}
-    password: ${_DATABASE_PASSWORD:postgres}
