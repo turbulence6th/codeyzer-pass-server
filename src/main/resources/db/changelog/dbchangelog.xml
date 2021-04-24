@@ -324,4 +324,22 @@
             <column name="sifre_secici" value='#ssopassword'/>
         </insert>
     </changeSet>
+
+    <changeSet id="202104242046" author="oguz">
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="D&amp;R"/>
+            <column name="platform_regex" value="^(www\.)?dr.com.tr/login$"/>
+            <column name="kullanici_adi_secici" value='#EmailField'/>
+            <column name="sifre_secici" value='#PasswordField'/>
+        </insert>
+
+        <insert tableName="platform_secici">
+            <column name="kimlik" valueComputed="gen_random_uuid()"/>
+            <column name="platform" value="Codeyzer"/>
+            <column name="platform_regex" value="^(www\.)?codeyzer.com/wp-login.php$"/>
+            <column name="kullanici_adi_secici" value='#user_login'/>
+            <column name="sifre_secici" value='#user_pass'/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
