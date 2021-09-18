@@ -22,12 +22,12 @@ public class KullaniciController {
     @RequestMapping(path = "/yeni", method = RequestMethod.POST)
     public Cevap<String> yeni(@RequestBody KullaniciOlusturDTO istek) {
         kullaniciServis.kullaniciOlustur(istek);
-        return new Cevap<>(istek.getKimlik(), "Kullanıcı başarılı bir şekilde oluşturuldu.");
+        return new Cevap<>(istek.getKimlik(), "http.kullanici.yeni");
     }
 
     @RequestMapping(path = "/dogrula", method = RequestMethod.POST)
     public Cevap<String> yeni(@RequestBody KullaniciDogrulaDTO istek) {
         kullaniciServis.kullaniciDogrula(istek);
-        return new Cevap<>(istek.getKimlik(), "Kullanıcı başarılı bir şekilde doğrulandı.");
+        return new Cevap<>(istek.getKimlik(), "http.kullanici.dogrula");
     }
 }

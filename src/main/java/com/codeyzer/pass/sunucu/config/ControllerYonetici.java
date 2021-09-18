@@ -20,6 +20,6 @@ public class ControllerYonetici {
     @ExceptionHandler(Exception.class)
     public Cevap<?> exception(Exception ex) {
         log.log(Level.ERROR, ex);
-        return new Cevap<>(null, false, "Beklenmedik bir hata oluştu.");
+        return new Cevap<>(null, false, "http.server.hata.beklenmedik");
     }
 }

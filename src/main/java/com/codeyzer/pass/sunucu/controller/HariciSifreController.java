@@ -23,24 +23,24 @@ public class HariciSifreController {
     @RequestMapping(path = "/getir", method = RequestMethod.POST)
     public Cevap<List<HariciSifreDTO>> getir(@RequestBody HariciSifreGetirDTO istek) {
         List<HariciSifreDTO> hariciSifreDTOListesi = hariciSifreServis.hariciSifreGetir(istek);
-        return new Cevap<>(hariciSifreDTOListesi, "Harici şifre listesi getirildi.");
+        return new Cevap<>(hariciSifreDTOListesi, "http.hariciSifre.getir");
     }
 
     @RequestMapping(path = "/kaydet", method = RequestMethod.POST)
     public Cevap<Void> kaydet(@RequestBody HariciSifreKaydetDTO istek) {
         hariciSifreServis.hariciSifreKaydet(istek);
-        return new Cevap<>(null, "Harici şifreniz başarılı olarak kaydedildi.");
+        return new Cevap<>(null, "http.hariciSifre.kaydet");
     }
 
     @RequestMapping(path = "/sil", method = RequestMethod.POST)
     public Cevap<Void> sil(@RequestBody HariciSifreSilDTO istek) {
         hariciSifreServis.hariciSifreSil(istek);
-        return new Cevap<>(null, "Harici şifreniz başarılı olarak silindi.");
+        return new Cevap<>(null, "http.hariciSifre.sil");
     }
 
     @RequestMapping(path = "/yenile", method = RequestMethod.POST)
     public Cevap<Void> sifreleriYenile(@RequestBody HariciSifreYenileDTO istek) {
         hariciSifreServis.hariciSifreYenile(istek);
-        return new Cevap<>(null, "Harici şifreleriniz başarılı olarak yenilendi.");
+        return new Cevap<>(null, "http.hariciSifre.yenile");
     }
 }

@@ -26,7 +26,7 @@ public class KullaniciServis {
     public KullaniciDTO kullaniciOlustur(KullaniciOlusturDTO kullaniciOlusturDTO) {
         boolean kimlikIleKullaniciVarMi = kullaniciHavuzu.kimlikIleGetir(kullaniciOlusturDTO.getKimlik()).isPresent();
         if (kimlikIleKullaniciVarMi) {
-            throw new CodeyzerIstisna("Bu kullanıcı zaten tanımlıdır.", kullaniciOlusturDTO.getKimlik());
+            throw new CodeyzerIstisna("http.kullanici.hata.mevcut", kullaniciOlusturDTO.getKimlik());
         }
 
         Kullanici kullanici = Kullanici.builder()
@@ -41,7 +41,7 @@ public class KullaniciServis {
     public void kullaniciDogrula(KullaniciDogrulaDTO kullaniciDogrulaDTO) {
         boolean kimlikIleKullaniciVarMi = kullaniciHavuzu.kimlikIleGetir(kullaniciDogrulaDTO.getKimlik()).isPresent();
         if (!kimlikIleKullaniciVarMi) {
-            throw new CodeyzerIstisna("Kullanıcı bulunamadı", kullaniciDogrulaDTO.getKimlik());
+            throw new CodeyzerIstisna("http.kullanici.hata.bulunamadi", kullaniciDogrulaDTO.getKimlik());
         }
     }
 }

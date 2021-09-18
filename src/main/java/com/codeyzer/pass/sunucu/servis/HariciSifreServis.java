@@ -46,7 +46,7 @@ public class HariciSifreServis {
     @Transactional
     public void hariciSifreSil(HariciSifreSilDTO hariciSifreSilDTO) {
         HariciSifre hariciSifre = hariciSifreHavuzu.kimlikVeKullaniyaGoreGetir(hariciSifreSilDTO.getKimlik(), kullaniciHavuzu.getOne(hariciSifreSilDTO.getKullaniciKimlik()))
-                .orElseThrow(() -> new CodeyzerIstisna("Harici şifre bulunamadı."));
+                .orElseThrow(() -> new CodeyzerIstisna("http.hariciSifre.hata.bulunamadi"));
        hariciSifreHavuzu.delete(hariciSifre);
     }
 
