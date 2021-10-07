@@ -26,3 +26,4 @@ spring:
       hibernate:
         jdbc:
           batch_size: 20
+    open-in-view: false
