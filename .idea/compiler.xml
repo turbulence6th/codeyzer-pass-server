@@ -16,7 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="pass-server" target="17" />
+      <module name="pass-server" target="16" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
