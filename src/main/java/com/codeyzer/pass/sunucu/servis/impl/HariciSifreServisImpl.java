@@ -42,7 +42,7 @@ public class HariciSifreServisImpl implements HariciSifreServis {
     @Transactional
     public void hariciSifreKaydet(HariciSifreKaydetDTO hariciSifreKaydetDTO) {
         HariciSifre hariciSifre = hariciSifreMapper.varligaDonustur(hariciSifreKaydetDTO);
-        hariciSifre.setKullanici(kullaniciHavuzu.getOne(hariciSifreKaydetDTO.getKullaniciKimlik()));
+        hariciSifre.setKullanici(kullaniciHavuzu.getById(hariciSifreKaydetDTO.getKullaniciKimlik()));
         hariciSifreHavuzu.save(hariciSifre);
     }
 
@@ -63,7 +63,7 @@ public class HariciSifreServisImpl implements HariciSifreServis {
                 .build());
         for (HariciSifreYenileElemanDTO eleman : hariciSifreYenileDTO.getHariciSifreListesi()) {
             HariciSifre hariciSifre = hariciSifreMapper.varligaDonustur(eleman);
-            hariciSifre.setKullanici(kullaniciHavuzu.getOne(hariciSifreYenileDTO.getYeniKullaniciKimlik()));
+            hariciSifre.setKullanici(kullaniciHavuzu.getById(hariciSifreYenileDTO.getYeniKullaniciKimlik()));
             hariciSifreHavuzu.save(hariciSifre);
         }
     }
