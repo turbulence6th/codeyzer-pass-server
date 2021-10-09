@@ -1,1 +1,0 @@
-Çevre değişkeni olarak 'spring.profiles.active=dev' eklenir.

@@ -2,7 +2,7 @@ package com.codeyzer.pass.sunucu.controller;
 
 import com.codeyzer.pass.sunucu.core.Cevap;
 import com.codeyzer.pass.sunucu.dto.*;
-import com.codeyzer.pass.sunucu.servis.HariciSifreServis;
+import com.codeyzer.pass.sunucu.servis.api.HariciSifreServis;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

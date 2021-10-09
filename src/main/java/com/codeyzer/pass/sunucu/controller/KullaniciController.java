@@ -3,7 +3,7 @@ package com.codeyzer.pass.sunucu.controller;
 import com.codeyzer.pass.sunucu.core.Cevap;
 import com.codeyzer.pass.sunucu.dto.KullaniciDogrulaDTO;
 import com.codeyzer.pass.sunucu.dto.KullaniciOlusturDTO;
-import com.codeyzer.pass.sunucu.servis.KullaniciServis;
+import com.codeyzer.pass.sunucu.servis.api.KullaniciServis;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
