@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 @Configuration
 public class VeriTabaniYapilandirma {
 
-    @Value("${DATABASE_URL:postgresql://postgres:postgres@localhost:5432/codeyzer_pass?currentSchema=codeyzer_pass}")
+    @Value("${DATABASE_URL:postgres://postgres:postgres@localhost:5432/codeyzer_pass?currentSchema=codeyzer_pass}")
     private String databaseUrl;
 
     @Bean
@@ -32,7 +32,7 @@ public class VeriTabaniYapilandirma {
             String port = matcher.group("port");
             String path = matcher.group("path");
 
-            String jdbcDbUrl = "jdbc:" + protocol + "://" + ip + ':' + port + path;
+            String jdbcDbUrl = "jdbc:postgresql" + "://" + ip + ':' + port + path;
 
             DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
             dataSourceBuilder.driverClassName("org.postgresql.Driver");
