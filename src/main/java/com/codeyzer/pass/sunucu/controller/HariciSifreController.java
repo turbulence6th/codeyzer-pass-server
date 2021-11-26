@@ -32,6 +32,12 @@ public class HariciSifreController {
         return new Cevap<>(null, "http.hariciSifre.kaydet");
     }
 
+    @RequestMapping(path = "/guncelle", method = RequestMethod.POST)
+    public Cevap<Void> guncelle(@RequestBody HariciSifreGuncelleDTO istek) {
+        hariciSifreServis.hariciSifreGuncelle(istek);
+        return new Cevap<>(null, "http.hariciSifre.guncelle");
+    }
+
     @RequestMapping(path = "/sil", method = RequestMethod.POST)
     public Cevap<Void> sil(@RequestBody HariciSifreSilDTO istek) {
         hariciSifreServis.hariciSifreSil(istek);

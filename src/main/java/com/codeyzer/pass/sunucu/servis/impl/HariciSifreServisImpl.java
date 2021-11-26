@@ -48,6 +48,15 @@ public class HariciSifreServisImpl implements HariciSifreServis {
 
     @Override
     @Transactional
+    public void hariciSifreGuncelle(HariciSifreGuncelleDTO hariciSifreGuncelleDTO) {
+        HariciSifre hariciSifre = hariciSifreHavuzu.kimlikVeKullaniyaGoreGetir(hariciSifreGuncelleDTO.getKimlik(), kullaniciHavuzu.getById(hariciSifreGuncelleDTO.getKullaniciKimlik()))
+                .orElseThrow(() -> new CodeyzerIstisna("http.hariciSifre.hata.bulunamadi"));
+        hariciSifreMapper.varligiGuncelle(hariciSifreGuncelleDTO, hariciSifre);
+        hariciSifreHavuzu.save(hariciSifre);
+    }
+
+    @Override
+    @Transactional
     public void hariciSifreSil(HariciSifreSilDTO hariciSifreSilDTO) {
         HariciSifre hariciSifre = hariciSifreHavuzu.kimlikVeKullaniyaGoreGetir(hariciSifreSilDTO.getKimlik(), kullaniciHavuzu.getById(hariciSifreSilDTO.getKullaniciKimlik()))
                 .orElseThrow(() -> new CodeyzerIstisna("http.hariciSifre.hata.bulunamadi"));
