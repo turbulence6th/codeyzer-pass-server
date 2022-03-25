@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CodeyzerPassSunucuUygulama" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="_PORT" value="9090" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.codeyzer.pass.sunucu.CodeyzerPassSunucuUygulama" />
+    <module name="pass-server" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.codeyzer.pass.sunucu.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
