@@ -21,4 +21,19 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="202203251648" author="oguz">
+        <createTable tableName="harici_dosya">
+            <column name="kimlik" type="varchar(256)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="mongo_kimlik" type="char(24)">
+                <constraints unique="true" uniqueConstraintName="uk_mongo_kimlik" nullable="false"/>
+            </column>
+            <column name="meta_veri" type="clob"/>
+            <column name="kullanici_kimlik" type="varchar(256)">
+                <constraints foreignKeyName="fk_kullanici_kimlik" referencedTableName="kullanici" referencedColumnNames="kimlik" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

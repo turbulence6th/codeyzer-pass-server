@@ -7,7 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HariciSifreKaydetDTO {
-    private String icerik;
-    private String kullaniciKimlik;
+public class HariciDosyaDTO {
+    private String kimlik;
+    private String mongoKimlik;
+    private String metaVeri;
 }

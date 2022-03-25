@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HariciSifreKaydetDTO {
-    private String icerik;
+public class HariciDosyaGetirDTO {
     private String kullaniciKimlik;
 }
