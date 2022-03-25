@@ -5,7 +5,6 @@ import com.codeyzer.pass.sunucu.dto.HariciDosyaGetirDTO;
 import com.codeyzer.pass.sunucu.dto.HariciDosyaIndirDTO;
 import com.codeyzer.pass.sunucu.dto.HariciDosyaKaydetDTO;
 import com.codeyzer.pass.sunucu.entity.HariciDosya;
-import com.codeyzer.pass.sunucu.entity.HariciSifre;
 import com.codeyzer.pass.sunucu.exception.CodeyzerIstisna;
 import com.codeyzer.pass.sunucu.mapper.HariciDosyaMapper;
 import com.codeyzer.pass.sunucu.repository.HariciDosyaHavuzu;
