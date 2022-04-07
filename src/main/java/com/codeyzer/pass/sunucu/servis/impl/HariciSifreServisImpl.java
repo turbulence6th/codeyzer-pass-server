@@ -32,6 +32,11 @@ public class HariciSifreServisImpl implements HariciSifreServis {
     @Override
     @Transactional
     public List<HariciSifreDTO> hariciSifreGetir(HariciSifreGetirDTO hariciSifreGetirDTO) {
+        boolean kimlikIleKullaniciVarMi = kullaniciHavuzu.kimlikIleGetir(hariciSifreGetirDTO.getKullaniciKimlik()).isPresent();
+        if (!kimlikIleKullaniciVarMi) {
+            throw new CodeyzerIstisna("http.kullanici.hata.bulunamadi", hariciSifreGetirDTO.getKullaniciKimlik());
+        }
+
         List<HariciSifre> hariciSifreListesi = hariciSifreHavuzu.kullaniciIleGetir(kullaniciHavuzu.getById(hariciSifreGetirDTO.getKullaniciKimlik()));
         return hariciSifreListesi.stream()
                 .map(hariciSifreMapper::dtoyaDonustur)

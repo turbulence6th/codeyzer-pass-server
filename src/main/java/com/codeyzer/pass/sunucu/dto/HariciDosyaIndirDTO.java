@@ -8,6 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class HariciDosyaIndirDTO {
-
     private String mongoKimlik;
 }
