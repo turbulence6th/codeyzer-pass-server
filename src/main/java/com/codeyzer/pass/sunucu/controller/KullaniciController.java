@@ -26,7 +26,7 @@ public class KullaniciController {
     }
 
     @RequestMapping(path = "/dogrula", method = RequestMethod.POST)
-    public Cevap<String> yeni(@RequestBody KullaniciDogrulaDTO istek) {
+    public Cevap<String> dogrula(@RequestBody KullaniciDogrulaDTO istek) {
         kullaniciServis.kullaniciDogrula(istek);
         return new Cevap<>(istek.getKimlik(), "http.kullanici.dogrula");
     }

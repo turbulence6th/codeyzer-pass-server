@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class HariciSifreKaydetDTO {
-    private String kimlik;
     private String icerik;
     private String kullaniciKimlik;
 }
