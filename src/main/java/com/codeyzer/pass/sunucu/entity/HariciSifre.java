@@ -12,9 +12,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 public class HariciSifre {
+
     @Id
-    @GeneratedValue(generator = "kimlik_uretici")
-    @GenericGenerator(name = "kimlik_uretici", strategy = "com.codeyzer.pass.sunucu.config.KimlikUretici")
     private String kimlik;
 
     private String icerik;

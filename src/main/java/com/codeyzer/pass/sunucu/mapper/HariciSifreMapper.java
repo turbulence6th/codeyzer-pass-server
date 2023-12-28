@@ -12,7 +12,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface HariciSifreMapper {
 
-    @Mapping(target = "kimlik", ignore = true)
     @Mapping(target = "kullanici", ignore = true)
     HariciSifre varligaDonustur(HariciSifreKaydetDTO dto);
 

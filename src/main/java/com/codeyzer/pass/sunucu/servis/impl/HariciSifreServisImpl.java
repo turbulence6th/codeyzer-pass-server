@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +44,11 @@ public class HariciSifreServisImpl implements HariciSifreServis {
     public void hariciSifreKaydet(HariciSifreKaydetDTO hariciSifreKaydetDTO) {
         HariciSifre hariciSifre = hariciSifreMapper.varligaDonustur(hariciSifreKaydetDTO);
         hariciSifre.setKullanici(kullaniciHavuzu.getById(hariciSifreKaydetDTO.getKullaniciKimlik()));
+
+        if (hariciSifre.getKimlik() == null) {
+            hariciSifre.setKimlik(UUID.randomUUID().toString());
+        }
+
         hariciSifreHavuzu.save(hariciSifre);
     }
 
