@@ -4,6 +4,7 @@ server:
     encoding:
       charset: UTF-8
       force: true
+    context-path: /codeyzer-pass
 
 spring:
   datasource:
