@@ -11,9 +11,9 @@
 	</parent>
 
 	<groupId>com.codeyzer</groupId>
-	<artifactId>pass-server</artifactId>
+	<artifactId>codeyzer-pass-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pass-server</name>
+	<name>codeyzer-pass-server</name>
 	<description>Codeyzer Pass Server</description>
 
 	<properties>

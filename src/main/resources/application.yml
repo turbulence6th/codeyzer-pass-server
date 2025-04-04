@@ -1,11 +1,5 @@
 server:
   port: ${_PORT:8080}
-  ssl:
-    enabled: ${_SSL_ENABLED:false}
-    key-store: ${_SSL_KEY_STORE}
-    key-store-password: ${_SSL_KEY_STORE_PASSWORD}
-    key-store-type: ${_SSL_KEY_STORE_TYPE}
-    key-alias: ${_SSL_KEY_ALIAS}
   servlet:
     encoding:
       charset: UTF-8
