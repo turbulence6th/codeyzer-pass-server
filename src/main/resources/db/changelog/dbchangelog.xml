@@ -4,8 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
+    <changeSet id="202504071554" author="oguz">
+        <sql>
+            CREATE SCHEMA codeyzer_pass;
+        </sql>
+    </changeSet>
+
     <changeSet id="202104190719" author="oguz">
-        <validCheckSum>8:e1c2d4c60455946250f61d1d08ec5258</validCheckSum>
         <createTable tableName="kullanici">
             <column name="kimlik" type="varchar(256)">
                 <constraints primaryKey="true"/>
