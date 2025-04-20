@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codeyzer_pass
+    username: codeyzer
+    password: codeyzer123
+
+  jpa:
+    show-sql: true
+
+codeyzer-pass:
+  pepper: f8y1Dq5G9n7Fg5XUlzNzdoht7sw+u9xyQkbbqsMyvYg=
+  bcrypt-strength: 12
+  jwt-secret: Mvpyzt1QOWdG9x4kkq0q7HRJ3QqXZvUlIDqtAtfczsRh6HdNKK7wYiI+jcrj44h0cQmQBNifGRI8Rt+d0a9CPg==
+  jwt-issuer: http://localhost:9090
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000

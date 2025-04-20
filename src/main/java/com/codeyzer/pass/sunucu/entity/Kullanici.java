@@ -1,19 +1,22 @@
 package com.codeyzer.pass.sunucu.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "kullanici")
 public class Kullanici {
+
     @Id
-    private String kimlik;
-    @OneToMany(mappedBy = "kullanici", cascade = CascadeType.ALL)
-    private List<HariciSifre> hariciSifreListesi;
+    @Column(name = "kullanici_kimlik", unique = true, nullable = false)
+    private String kullaniciKimlik; // Örn: SHA512(username + ':' + password)
+
+    @Column(name = "sifre_hash", nullable = false)
+    private String sifreHash; // bcyrypt
 }

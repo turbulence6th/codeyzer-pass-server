@@ -1,12 +1,11 @@
 package com.codeyzer.pass.sunucu.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Builder
 public class KullaniciDogrulaDTO {
-    private String kimlik;
+    private String kullaniciKimlik;
+    private String sifreHash;
 }

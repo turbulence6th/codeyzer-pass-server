@@ -1,24 +1,31 @@
 package com.codeyzer.pass.sunucu.entity;
 
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "harici_sifre")
 public class HariciSifre {
 
     @Id
-    private String kimlik;
+    private String id;
 
-    private String icerik;
+    // Şifreli olarak saklanan kullanıcı adı, şifre ve varsa not
+    @Column(name = "encrypted_data", nullable = false, columnDefinition = "TEXT")
+    private String encryptedData;
 
+    // Şifreli metadata: url, androidPackage vb.
+    @Column(name = "encrypted_metadata", nullable = false, columnDefinition = "TEXT")
+    private String encryptedMetadata;
+
+    @Column(name = "aes_iv", nullable = false, columnDefinition = "TEXT")
+    private String aesIV;
+
+    // Sahiplik ilişkisi
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kullanici_kimlik")
+    @JoinColumn(name = "kullanici_kimlik", nullable = false)
     private Kullanici kullanici;
 }

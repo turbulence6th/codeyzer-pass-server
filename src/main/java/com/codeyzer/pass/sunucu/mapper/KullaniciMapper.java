@@ -1,10 +1,13 @@
 package com.codeyzer.pass.sunucu.mapper;
 
-import com.codeyzer.pass.sunucu.dto.KullaniciDTO;
+import com.codeyzer.pass.sunucu.dto.KullaniciOlusturRequestDTO;
 import com.codeyzer.pass.sunucu.entity.Kullanici;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface KullaniciMapper {
-    KullaniciDTO dtoyaDonustur(Kullanici kullanici);
+
+    @Mapping(target = "sifreHash", ignore = true)
+    Kullanici toEntity(KullaniciOlusturRequestDTO request);
 }

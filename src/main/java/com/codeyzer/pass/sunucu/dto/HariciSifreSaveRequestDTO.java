@@ -1,13 +1,13 @@
 package com.codeyzer.pass.sunucu.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class HariciSifreDTO {
+public class HariciSifreSaveRequestDTO {
 
     private String id;
     private String encryptedData;

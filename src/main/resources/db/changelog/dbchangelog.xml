@@ -4,20 +4,50 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <changeSet id="202104190719" author="oguz">
+    <changeSet id="202504172210" author="oguz">
+        <!-- Kullanici Tablosu -->
         <createTable tableName="kullanici">
-            <column name="kimlik" type="varchar(256)">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-        <createTable tableName="harici_sifre">
-            <column name="kimlik" type="varchar(256)">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="icerik" type="clob"/>
             <column name="kullanici_kimlik" type="varchar(256)">
-                <constraints foreignKeyName="fk_kullanici_kimlik" referencedTableName="kullanici" referencedColumnNames="kimlik"/>
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sifre_hash" type="varchar(256)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createIndex tableName="kullanici" indexName="idx_kullanici_kimlik">
+            <column name="kullanici_kimlik"/>
+        </createIndex>
+
+        <!-- Harici Sifre Tablosu -->
+        <createTable tableName="harici_sifre">
+            <column name="id" type="varchar(256)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="encrypted_data" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="encrypted_metadata" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aes_iv" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="kullanici_kimlik" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="harici_sifre"
+                baseColumnNames="kullanici_kimlik"
+                constraintName="fk_harici_sifre_kullanici"
+                referencedTableName="kullanici"
+                referencedColumnNames="kullanici_kimlik"
+                onDelete="CASCADE"/>
+
+        <createIndex tableName="harici_sifre" indexName="idx_harici_sifre_kullanici">
+            <column name="kullanici_kimlik"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

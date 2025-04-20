@@ -1,52 +1,40 @@
 package com.codeyzer.pass.sunucu.controller;
 
-import com.codeyzer.pass.sunucu.core.Cevap;
-import com.codeyzer.pass.sunucu.dto.*;
-import com.codeyzer.pass.sunucu.servis.api.HariciSifreServis;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.codeyzer.pass.sunucu.dto.HariciSifreDTO;
+import com.codeyzer.pass.sunucu.dto.HariciSifreSaveRequestDTO;
+import com.codeyzer.pass.sunucu.dto.HariciSifreUpdateRequestDTO;
+import com.codeyzer.pass.sunucu.service.HariciSifreService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/hariciSifre")
+@RequestMapping("/api/harici-sifre")
+@RequiredArgsConstructor
+@Slf4j
 public class HariciSifreController {
 
-    private final HariciSifreServis hariciSifreServis;
+    private final HariciSifreService service;
 
-    public HariciSifreController(HariciSifreServis hariciSifreServis) {
-        this.hariciSifreServis = hariciSifreServis;
+    @GetMapping
+    public List<HariciSifreDTO> getAll() {
+        return service.getAllForCurrentUser();
     }
 
-    @RequestMapping(path = "/getir", method = RequestMethod.POST)
-    public Cevap<List<HariciSifreDTO>> getir(@RequestBody HariciSifreGetirDTO istek) {
-        List<HariciSifreDTO> hariciSifreDTOListesi = hariciSifreServis.hariciSifreGetir(istek);
-        return new Cevap<>(hariciSifreDTOListesi, "http.hariciSifre.getir");
+    @PostMapping("/kaydet")
+    public HariciSifreDTO save(@RequestBody HariciSifreSaveRequestDTO dto) {
+        return service.save(dto);
     }
 
-    @RequestMapping(path = "/kaydet", method = RequestMethod.POST)
-    public Cevap<Void> kaydet(@RequestBody HariciSifreKaydetDTO istek) {
-        hariciSifreServis.hariciSifreKaydet(istek);
-        return new Cevap<>(null, "http.hariciSifre.kaydet");
+    @PutMapping("/guncelle/{id}")
+    public HariciSifreDTO update(@PathVariable String id, @RequestBody HariciSifreUpdateRequestDTO dto) {
+        return service.update(id, dto);
     }
 
-    @RequestMapping(path = "/guncelle", method = RequestMethod.POST)
-    public Cevap<Void> guncelle(@RequestBody HariciSifreGuncelleDTO istek) {
-        hariciSifreServis.hariciSifreGuncelle(istek);
-        return new Cevap<>(null, "http.hariciSifre.guncelle");
-    }
-
-    @RequestMapping(path = "/sil", method = RequestMethod.POST)
-    public Cevap<Void> sil(@RequestBody HariciSifreSilDTO istek) {
-        hariciSifreServis.hariciSifreSil(istek);
-        return new Cevap<>(null, "http.hariciSifre.sil");
-    }
-
-    @RequestMapping(path = "/yenile", method = RequestMethod.POST)
-    public Cevap<Void> sifreleriYenile(@RequestBody HariciSifreYenileDTO istek) {
-        hariciSifreServis.hariciSifreYenile(istek);
-        return new Cevap<>(null, "http.hariciSifre.yenile");
+    @DeleteMapping("/sil/{id}")
+    public void delete(@PathVariable String id) {
+        service.delete(id);
     }
 }

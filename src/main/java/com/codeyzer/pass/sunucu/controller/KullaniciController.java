@@ -1,33 +1,35 @@
 package com.codeyzer.pass.sunucu.controller;
 
-import com.codeyzer.pass.sunucu.core.Cevap;
-import com.codeyzer.pass.sunucu.dto.KullaniciDogrulaDTO;
-import com.codeyzer.pass.sunucu.dto.KullaniciOlusturDTO;
-import com.codeyzer.pass.sunucu.servis.api.KullaniciServis;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.codeyzer.pass.sunucu.dto.JwtResponseDTO;
+import com.codeyzer.pass.sunucu.dto.KullaniciLoginRequest;
+import com.codeyzer.pass.sunucu.dto.KullaniciOlusturRequestDTO;
+import com.codeyzer.pass.sunucu.dto.TokenRefreshRequestDTO;
+import com.codeyzer.pass.sunucu.service.KullaniciService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/kullanici")
+@RequestMapping("/api/kullanici")
+@RequiredArgsConstructor
 public class KullaniciController {
 
-    private final KullaniciServis kullaniciServis;
+    private final KullaniciService kullaniciService;
 
-    public KullaniciController(KullaniciServis kullaniciServis) {
-        this.kullaniciServis = kullaniciServis;
+    @PostMapping("/register")
+    public ResponseEntity<JwtResponseDTO> register(@RequestBody KullaniciOlusturRequestDTO request) {
+        JwtResponseDTO responseDTO = kullaniciService.kullaniciKaydet(request);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @RequestMapping(path = "/yeni", method = RequestMethod.POST)
-    public Cevap<String> yeni(@RequestBody KullaniciOlusturDTO istek) {
-        kullaniciServis.kullaniciOlustur(istek);
-        return new Cevap<>(istek.getKimlik(), "http.kullanici.yeni");
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponseDTO> login(@RequestBody KullaniciLoginRequest request) {
+        JwtResponseDTO responseDTO = kullaniciService.kullaniciDogrula(request);
+        return ResponseEntity.ok(responseDTO);
     }
 
-    @RequestMapping(path = "/dogrula", method = RequestMethod.POST)
-    public Cevap<String> dogrula(@RequestBody KullaniciDogrulaDTO istek) {
-        kullaniciServis.kullaniciDogrula(istek);
-        return new Cevap<>(istek.getKimlik(), "http.kullanici.dogrula");
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponseDTO> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
+        return ResponseEntity.ok(kullaniciService.refreshToken(request));
     }
 }

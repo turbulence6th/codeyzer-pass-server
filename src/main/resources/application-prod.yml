@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: SPRING_DATASOURCE_URL
+    username: SPRING_DATASOURCE_USERNAME
+    password: SPRING_DATASOURCE_PASSWORD
+
+  jpa:
+    show-sql: false
+
+codeyzer-pass:
+  pepper: CODEYZERPASS_PEPPER
+  bcrypt-strength: CODEYZERPASS_BCYRPTSTRENGTH
+  jwt-secret: CODEYZERPASS_JWTSECRET
+  jwt-issuer: CODEYZERPASS_JWTISSUER
+  access-token-expiration: CODEYZERPASS_ACCESSTOKENEXPIRATION
+  refresh-token-expiration: CODEYZERPASS_REFRESHTOKENEXPIRATION
