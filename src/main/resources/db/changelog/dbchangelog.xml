@@ -50,4 +50,21 @@
             <column name="kullanici_kimlik"/>
         </createIndex>
     </changeSet>
+
+    <changeSet id="202504221603" author="oguz">
+        <createTable tableName="refresh_token">
+            <column name="id" type="varchar(86)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="kullanici_kimlik" type="varchar(256)">
+                <constraints nullable="false" foreignKeyName="fk_refresh_token_kullanici"
+                             references="kullanici(kullanici_kimlik)"/>
+            </column>
+
+            <column name="expiry_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
