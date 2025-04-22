@@ -1,9 +1,6 @@
 package com.codeyzer.pass.sunucu.controller;
 
-import com.codeyzer.pass.sunucu.dto.JwtResponseDTO;
-import com.codeyzer.pass.sunucu.dto.KullaniciLoginRequest;
-import com.codeyzer.pass.sunucu.dto.KullaniciOlusturRequestDTO;
-import com.codeyzer.pass.sunucu.dto.TokenRefreshRequestDTO;
+import com.codeyzer.pass.sunucu.dto.*;
 import com.codeyzer.pass.sunucu.service.KullaniciService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +28,11 @@ public class KullaniciController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponseDTO> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
         return ResponseEntity.ok(kullaniciService.refreshToken(request));
+    }
+
+    @PutMapping("/sifre-guncelle")
+    public ResponseEntity<JwtResponseDTO> sifreGuncelle(@RequestBody SifreGuncelleRequestDTO request) {
+        JwtResponseDTO responseDTO = kullaniciService.sifreGuncelle(request);
+        return ResponseEntity.ok(responseDTO);
     }
 }

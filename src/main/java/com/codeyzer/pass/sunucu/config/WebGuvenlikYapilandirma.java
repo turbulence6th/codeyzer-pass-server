@@ -24,7 +24,9 @@ import java.util.List;
 public class WebGuvenlikYapilandirma implements WebMvcConfigurer {
 
     public static final String[] WHITE_LIST = new String[] {
-        "/api/kullanici/**"
+        "/api/kullanici/register",
+        "/api/kullanici/login",
+        "/api/kullanici/refresh"
     };
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

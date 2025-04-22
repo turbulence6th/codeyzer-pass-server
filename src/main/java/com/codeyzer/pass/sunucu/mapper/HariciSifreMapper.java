@@ -3,6 +3,7 @@ package com.codeyzer.pass.sunucu.mapper;
 import com.codeyzer.pass.sunucu.dto.HariciSifreDTO;
 import com.codeyzer.pass.sunucu.dto.HariciSifreSaveRequestDTO;
 import com.codeyzer.pass.sunucu.dto.HariciSifreUpdateRequestDTO;
+import com.codeyzer.pass.sunucu.dto.SifreGuncelleHariciSifreDTO;
 import com.codeyzer.pass.sunucu.entity.HariciSifre;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,6 +16,9 @@ public interface HariciSifreMapper {
 
     @Mapping(target = "kullanici", ignore = true)
     HariciSifre toEntity(HariciSifreSaveRequestDTO dto);
+
+    @Mapping(target = "kullanici", ignore = true)
+    HariciSifre toEntity(SifreGuncelleHariciSifreDTO dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "kullanici", ignore = true)
