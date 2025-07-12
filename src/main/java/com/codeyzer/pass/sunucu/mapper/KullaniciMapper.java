@@ -13,6 +13,6 @@ public interface KullaniciMapper {
     Kullanici toEntity(KullaniciOlusturRequestDTO request);
 
     @Mapping(target = "kullaniciKimlik", source = "yeniKullaniciKimlik")
-    @Mapping(target = "sifreHash", source = "yeniSifreHash")
+    @Mapping(target = "sifreSha512", source = "yeniSifreSha512")
     KullaniciOlusturRequestDTO toKullaniciOlusturRequestDTO(SifreGuncelleRequestDTO request);
 }

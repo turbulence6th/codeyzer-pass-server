@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class KullaniciLoginRequest {
     private String kullaniciKimlik; // SHA512(username + ":" + password)
-    private String sifreHash;       // bcrypt(password) // frontendde yapılır
+    private String sifreSha512;       // bcrypt(password) // frontendde yapılır
 }

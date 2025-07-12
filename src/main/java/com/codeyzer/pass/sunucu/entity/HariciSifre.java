@@ -21,8 +21,11 @@ public class HariciSifre {
     @Column(name = "encrypted_metadata", nullable = false, columnDefinition = "TEXT")
     private String encryptedMetadata;
 
-    @Column(name = "aes_iv", nullable = false, columnDefinition = "TEXT")
-    private String aesIV;
+    @Column(name = "aes_iv_data", nullable = false, columnDefinition = "TEXT")
+    private String aesIVData;
+
+    @Column(name = "aes_iv_metadata", nullable = false, columnDefinition = "TEXT")
+    private String aesIVMetadata;
 
     // Sahiplik ilişkisi
     @ManyToOne(fetch = FetchType.LAZY)

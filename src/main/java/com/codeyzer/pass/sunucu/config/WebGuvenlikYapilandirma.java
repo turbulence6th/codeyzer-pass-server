@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -34,15 +38,25 @@ public class WebGuvenlikYapilandirma implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // WHITE_LIST içindeki her bir string path için AntPathRequestMatcher oluştur
+        List<RequestMatcher> whiteListMatchers = Arrays.stream(WHITE_LIST)
+                .map(AntPathRequestMatcher::new) // Her bir string path'i AntPathRequestMatcher'a dönüştür
+                .collect(Collectors.toList());
+
+        // H2 konsolu için de bir AntPathRequestMatcher ekle
+        whiteListMatchers.add(new AntPathRequestMatcher("/h2-console/**"));
+
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(WHITE_LIST).permitAll()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Oluşturulan RequestMatcher listesini OrRequestMatcher ile birleştirerek kullan
+                        .requestMatchers(new OrRequestMatcher(whiteListMatchers)).permitAll()
+                        // .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll() // Bu zaten yukarıda whiteListMatchers'a eklendi
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SifreGuncelleRequestDTO {
     private String yeniKullaniciKimlik;
-    private String yeniSifreHash;
+    private String yeniSifreSha512;
     private List<SifreGuncelleHariciSifreDTO> yeniHariciSifreList; // Adı böyle olmalı
 }

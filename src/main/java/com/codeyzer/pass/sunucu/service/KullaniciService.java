@@ -72,7 +72,7 @@ public class KullaniciService {
 
     @Transactional
     public JwtResponseDTO kullaniciKaydet(KullaniciOlusturRequestDTO request) {
-        if (request.getKullaniciKimlik() == null || request.getSifreHash() == null) {
+        if (request.getKullaniciKimlik() == null || request.getSifreSha512() == null) {
             throw new CodeyzerPassException(HttpStatus.BAD_REQUEST, "Eksik veri gönderildi.");
         }
 
@@ -81,7 +81,7 @@ public class KullaniciService {
         }
 
         Kullanici kullanici = kullaniciMapper.toEntity(request);
-        kullanici.setSifreHash(passwordEncoder.encode(request.getSifreHash()));
+        kullanici.setSifreHash(passwordEncoder.encode(request.getSifreSha512()));
         Kullanici kaydedilenKullanici = kullaniciRepository.save(kullanici);
 
         String accessToken = jwtUtil.generateAccessToken(kaydedilenKullanici.getKullaniciKimlik());
@@ -95,7 +95,7 @@ public class KullaniciService {
         Kullanici kullanici = kullaniciRepository.findById(request.getKullaniciKimlik())
                 .orElseThrow(() -> new CodeyzerPassException(HttpStatus.UNPROCESSABLE_ENTITY, "Kullanıcı bilgileri hatalıdır."));
 
-        boolean sifreGecerli = passwordEncoder.matches(request.getSifreHash(), kullanici.getSifreHash());
+        boolean sifreGecerli = passwordEncoder.matches(request.getSifreSha512(), kullanici.getSifreHash());
 
         if (!sifreGecerli) {
             throw new CodeyzerPassException(HttpStatus.UNPROCESSABLE_ENTITY, "Kullanıcı bilgileri hatalıdır.");

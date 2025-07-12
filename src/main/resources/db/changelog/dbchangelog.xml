@@ -30,7 +30,10 @@
             <column name="encrypted_metadata" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="aes_iv" type="varchar(256)">
+            <column name="aes_iv_data" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aes_iv_metadata" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
             <column name="kullanici_kimlik" type="varchar(256)">

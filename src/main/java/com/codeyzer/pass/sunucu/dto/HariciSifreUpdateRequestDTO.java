@@ -11,5 +11,6 @@ public class HariciSifreUpdateRequestDTO {
 
     private String encryptedData;
     private String encryptedMetadata;
-    private String aesIV;
+    private String aesIVData;
+    private String aesIVMetadata;
 }

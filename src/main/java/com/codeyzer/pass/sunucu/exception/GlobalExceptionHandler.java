@@ -2,6 +2,7 @@ package com.codeyzer.pass.sunucu.exception;
 
 import com.codeyzer.pass.sunucu.dto.CodeyzerPassErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CodeyzerPassException.class)
     public ResponseEntity<CodeyzerPassErrorResponseDTO> handleCodeyzerPassException(CodeyzerPassException ex, HttpServletRequest request) {
+        log.error(ex.getMessage(), ex);
+
         CodeyzerPassErrorResponseDTO responseDTO = CodeyzerPassErrorResponseDTO.builder()
                 .error(ex.getMessage())
                 .path(request.getRequestURI())
@@ -27,7 +31,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CodeyzerPassErrorResponseDTO> handleGeneralException(HttpServletRequest request) {
+    public ResponseEntity<CodeyzerPassErrorResponseDTO> handleGeneralException(Exception ex, HttpServletRequest request) {
+        log.error(ex.getMessage(), ex);
+
         CodeyzerPassErrorResponseDTO responseDTO = CodeyzerPassErrorResponseDTO.builder()
                 .error("Beklenmedik bir hata oluştu.")
                 .path(request.getRequestURI())
