@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface HariciSifreRepository extends JpaRepository<HariciSifre, String> {
     List<HariciSifre> findAllByKullanici_KullaniciKimlik(String kullaniciKimlik);
     Optional<HariciSifre> findByIdAndKullanici(String id, Kullanici kullanici);
+    void deleteByKullanici(Kullanici kullanici);
 }

@@ -1,6 +1,7 @@
 package com.codeyzer.pass.sunucu.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,9 @@ public class WebGuvenlikYapilandirma implements WebMvcConfigurer {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RateLimitInterceptor rateLimitInterceptor;
+
+    @Value("${rate-limiter.enabled:true}")
+    private boolean rateLimiterEnabled;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,6 +82,8 @@ public class WebGuvenlikYapilandirma implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(rateLimitInterceptor);
+        if (rateLimiterEnabled) {
+            registry.addInterceptor(rateLimitInterceptor);
+        }
     }
 }

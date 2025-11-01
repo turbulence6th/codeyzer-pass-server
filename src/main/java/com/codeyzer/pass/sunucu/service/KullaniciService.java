@@ -13,6 +13,7 @@ import com.codeyzer.pass.sunucu.repository.RefreshTokenRepository;
 import com.codeyzer.pass.sunucu.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class KullaniciService {
@@ -124,37 +126,97 @@ public class KullaniciService {
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-//    @CacheEvict(value = "kullaniciCache", key = "#mevcutKullanici.kullaniciKimlik")
+    @CacheEvict(value = "kullaniciCache", key = "#result.getAccessToken()")
     public JwtResponseDTO sifreGuncelle(SifreGuncelleRequestDTO request) {
+        // 1. Mevcut kullanıcıyı al
         Kullanici mevcutKullanici = getCurrentUser();
         String eskiKullaniciKimlik = mevcutKullanici.getKullaniciKimlik();
 
-        KullaniciOlusturRequestDTO yeniKullaniciDto = kullaniciMapper.toKullaniciOlusturRequestDTO(request);
+        log.info("Ana şifre güncelleme işlemi başlatıldı. Kullanıcı: {}", eskiKullaniciKimlik.substring(0, Math.min(8, eskiKullaniciKimlik.length())) + "...");
 
-        JwtResponseDTO jwtResponseDTO = kullaniciKaydet(yeniKullaniciDto);
-
-        Kullanici yeniKaydedilenKullanici = kullaniciRepository.getReferenceById(request.getYeniKullaniciKimlik());
-
-        for (SifreGuncelleHariciSifreDTO sifreDTO : request.getYeniHariciSifreList()) {
-            HariciSifre eskiHariciSifre = hariciSifreRepository.findByIdAndKullanici(sifreDTO.getEskiId(), mevcutKullanici)
-                    .orElseThrow(() -> new CodeyzerPassException(HttpStatus.BAD_REQUEST,
-                            "İşlenecek eski harici şifre bulunamadı: ID " + sifreDTO.getEskiId()));
-            hariciSifreRepository.delete(eskiHariciSifre);
-
-            HariciSifre yeniHariciSifre = hariciSifreMapper.toEntity(sifreDTO);
-            yeniHariciSifre.setKullanici(yeniKaydedilenKullanici);
-            hariciSifreRepository.save(yeniHariciSifre);
+        // 2. Validasyon: Yeni kimlik ile eski kimlik aynı olamaz
+        if (eskiKullaniciKimlik.equals(request.getYeniKullaniciKimlik())) {
+            log.warn("Ana şifre güncelleme başarısız: Yeni kimlik eski kimlik ile aynı. Kullanıcı: {}", eskiKullaniciKimlik.substring(0, Math.min(8, eskiKullaniciKimlik.length())) + "...");
+            throw new CodeyzerPassException(HttpStatus.BAD_REQUEST,
+                    "Yeni ana şifre, mevcut ana şifre ile aynı olamaz.");
         }
 
-        List<HariciSifre> atikHariciSifreListe = hariciSifreRepository.findAllByKullanici_KullaniciKimlik(eskiKullaniciKimlik);
-        if (!atikHariciSifreListe.isEmpty()) {
+        // 3. Validasyon: Request verileri kontrolü
+        if (request.getYeniKullaniciKimlik() == null || request.getYeniSifreSha512() == null) {
+            log.error("Ana şifre güncelleme başarısız: Eksik veri. Kullanıcı: {}", eskiKullaniciKimlik.substring(0, Math.min(8, eskiKullaniciKimlik.length())) + "...");
+            throw new CodeyzerPassException(HttpStatus.BAD_REQUEST, "Eksik veri gönderildi.");
+        }
+
+        // 4. Validasyon: Tüm harici şifrelerin mevcut kullanıcıya ait olduğunu doğrula
+        List<String> eskiIdList = request.getYeniHariciSifreList().stream()
+                .map(SifreGuncelleHariciSifreDTO::getEskiId)
+                .collect(Collectors.toList());
+
+        List<HariciSifre> mevcutHariciSifreler = hariciSifreRepository.findAllByKullanici_KullaniciKimlik(eskiKullaniciKimlik);
+
+        if (!eskiIdList.isEmpty() && mevcutHariciSifreler.size() != eskiIdList.size()) {
+            log.error("Ana şifre güncelleme başarısız: Şifre sayısı uyuşmazlığı. Beklenen: {}, Gönderilen: {}",
+                     mevcutHariciSifreler.size(), eskiIdList.size());
+            throw new CodeyzerPassException(HttpStatus.BAD_REQUEST,
+                    "Gönderilen şifre sayısı ile mevcut şifre sayısı eşleşmiyor. Beklenen: "
+                    + mevcutHariciSifreler.size() + ", Gönderilen: " + eskiIdList.size());
+        }
+
+        log.debug("Validasyon başarılı. {} adet şifre kaydı yeniden şifrelenecek.", mevcutHariciSifreler.size());
+
+        try {
+            // 5. Yeni kullanıcı kaydını oluştur
+            KullaniciOlusturRequestDTO yeniKullaniciDto = kullaniciMapper.toKullaniciOlusturRequestDTO(request);
+            JwtResponseDTO jwtResponseDTO = kullaniciKaydet(yeniKullaniciDto);
+
+            // 6. Yeni kullanıcıyı getir
+            Kullanici yeniKaydedilenKullanici = kullaniciRepository.getReferenceById(request.getYeniKullaniciKimlik());
+
+            // 7. Tüm harici şifreleri yeni kullanıcıya taşı
+            for (SifreGuncelleHariciSifreDTO sifreDTO : request.getYeniHariciSifreList()) {
+                HariciSifre eskiHariciSifre = hariciSifreRepository.findByIdAndKullanici(sifreDTO.getEskiId(), mevcutKullanici)
+                        .orElseThrow(() -> new CodeyzerPassException(HttpStatus.BAD_REQUEST,
+                                "İşlenecek eski harici şifre bulunamadı: ID " + sifreDTO.getEskiId()));
+
+                // Yeni harici şifre oluştur
+                HariciSifre yeniHariciSifre = hariciSifreMapper.toEntity(sifreDTO);
+                yeniHariciSifre.setKullanici(yeniKaydedilenKullanici);
+                hariciSifreRepository.save(yeniHariciSifre);
+
+                // Eski kaydı sil
+                hariciSifreRepository.delete(eskiHariciSifre);
+            }
+
+            // 8. Güvenlik kontrolü: Eski kullanıcıya ait atık kayıt kalmamalı
+            List<HariciSifre> atikHariciSifreListe = hariciSifreRepository.findAllByKullanici_KullaniciKimlik(eskiKullaniciKimlik);
+            if (!atikHariciSifreListe.isEmpty()) {
+                log.error("Ana şifre güncelleme başarısız: Atık kayıt bulundu. Sayı: {}", atikHariciSifreListe.size());
+                throw new CodeyzerPassException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Harici şifre taşıma işlemi tutarsız. Eski kullanıcıya ait atık kayıtlar bulundu: " + atikHariciSifreListe.size());
+            }
+
+            // 9. Eski kullanıcının tüm refresh token'larını sil
+            refreshTokenRepository.deleteByKullanici(mevcutKullanici);
+            log.debug("Eski kullanıcının refresh token'ları silindi.");
+
+            // 10. Eski kullanıcı kaydını sil
+            kullaniciRepository.delete(mevcutKullanici);
+            log.info("Ana şifre başarıyla güncellendi. Eski kullanıcı: {}, Yeni kullanıcı: {}",
+                    eskiKullaniciKimlik.substring(0, Math.min(8, eskiKullaniciKimlik.length())) + "...",
+                    request.getYeniKullaniciKimlik().substring(0, Math.min(8, request.getYeniKullaniciKimlik().length())) + "...");
+
+            return jwtResponseDTO;
+
+        } catch (CodeyzerPassException e) {
+            // CodeyzerPassException'ları olduğu gibi fırlat (transaction rollback tetiklenir)
+            log.warn("Ana şifre güncelleme başarısız (CodeyzerPassException): {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            // Beklenmeyen hataları logla ve kullanıcıya genel bir mesaj ver
+            log.error("Ana şifre güncellenirken beklenmeyen hata. Kullanıcı: {}, Hata: {}",
+                     eskiKullaniciKimlik.substring(0, Math.min(8, eskiKullaniciKimlik.length())) + "...", e.getMessage(), e);
             throw new CodeyzerPassException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Harici şifre taşıma işlemi tutarsız. Eski kullanıcıya ait atık kayıtlar bulundu.");
+                    "Ana şifre güncellenirken beklenmeyen bir hata oluştu: " + e.getMessage());
         }
-
-        refreshTokenRepository.deleteByKullanici(mevcutKullanici);
-        kullaniciRepository.delete(mevcutKullanici);
-
-        return jwtResponseDTO;
     }
 }

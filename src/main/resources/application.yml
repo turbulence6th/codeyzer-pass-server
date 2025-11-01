@@ -1,5 +1,5 @@
 server:
-  port: ${_PORT:8080}
+  port: ${_PORT:9090}
   servlet:
     encoding:
       charset: UTF-8
@@ -20,7 +20,14 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/dbchangelog.xml
 
+# Rate limiter global ayarı
+rate-limiter:
+  enabled: false
+
   jpa:
+    hibernate:
+      # Liquibase yöneteceği için Hibernate şema değişikliği yapmasın
+      ddl-auto: none
     properties:
       hibernate:
         jdbc:
