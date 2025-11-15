@@ -30,6 +30,12 @@ public class KullaniciController {
         return ResponseEntity.ok(kullaniciService.refreshToken(request));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody TokenRefreshRequestDTO request) {
+        kullaniciService.logout(request);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/sifre-guncelle")
     public ResponseEntity<JwtResponseDTO> sifreGuncelle(@RequestBody SifreGuncelleRequestDTO request) {
         JwtResponseDTO responseDTO = kullaniciService.sifreGuncelle(request);
